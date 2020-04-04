@@ -1,0 +1,11 @@
+1) press ! and then tab to insert a basic html code layout
+
+2) as a best practice you should add your Javascript code
+(your script element) at the end of the Body section
+
+3) *notes from a different video*:
+-abstraction
+-encapsulation
+-polymorphism
+-inheritance
+
