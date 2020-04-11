@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import BottomTabNavigator from './navigation/BottomTabNavigator';
+import BottomTabNavigatorSignedIn from './navigation/BottomTabNavigatorSignedIn';
 import useLinking from './navigation/useLinking';
 
 import ApiKeys from './constants/ApiKeys'
@@ -59,6 +60,7 @@ export default function App(props) {
         <NavigationContainer ref={containerRef} initialState={initialNavigationState}>
           <Stack.Navigator>
             <Stack.Screen name="Root" component={BottomTabNavigator} />
+            <Stack.Screen name="MainScreen" component={BottomTabNavigatorSignedIn}/>
           </Stack.Navigator>
         </NavigationContainer>
       </View>

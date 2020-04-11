@@ -1,7 +1,8 @@
 // Main.js
 import React from 'react'
-import { StyleSheet, Platform, Image, Text, View } from 'react-native'
+import { StyleSheet, Platform, Image, Text, View,TouchableOpacity } from 'react-native'
 import firebase from 'firebase'
+import Customstyles from '../components/CustomStyle'
 
 
 export default class Main extends React.Component {
@@ -10,6 +11,17 @@ export default class Main extends React.Component {
     const { currentUser } = firebase.auth()
     this.setState({ currentUser })
 }
+
+handleSignOut = () => {
+  firebase
+      .auth()
+      .signOut()
+      .then(() => this.props.navigation.navigate('Root'));
+  const cu = null;
+  this.setState({cu});
+
+  console.log('handleSignOut')
+}
 render() {
     const { currentUser } = this.state
 return (
@@ -17,6 +29,11 @@ return (
         <Text>
           Hi {currentUser && currentUser.email}!!!
         </Text>
+        <TouchableOpacity
+          style={Customstyles.buttonOut}
+          onPress={this.handleSignOut} >
+          <Text style={{color:"#fff"}}>SignOut</Text>
+        </TouchableOpacity>
       </View>
     )
   }

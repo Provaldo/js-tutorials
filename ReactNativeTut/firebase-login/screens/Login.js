@@ -1,109 +1,78 @@
 // Login.js
 import React from 'react'
-import { StyleSheet, Text, TextInput, View, Button } from 'react-native'
+import { Text, TextInput, View, Button ,TouchableOpacity} from 'react-native'
+import styles from '../components/CustomStyle'
 import firebase from 'firebase'
-
 
 export default class Login extends React.Component {
   state = { email: '', password: '', errorMessage: null };
 
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
-      this.props.navigation.navigate(user ? 'Main' : 'SignUp')
+      this.props.navigation.navigate(user ? 'MainScreen' : 'Login')
     })
   };
 
   handleLogin = () => {
     const { email, password } = this.state
+    this.setState({ errorMessage: null })
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(() => this.props.navigation.navigate('Main'))
+      .then(() => this.props.navigation.navigate('MainScreen'))
       .catch(error => this.setState({ errorMessage: error.message }))
-    console.log('handleLogin')
+
+    console.log('handleLogin--')
+
   };
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.loginInfoContainer}>
-          <Text>Login</Text>
+        {/* <View style={styles.loginInfoContainer}> */}
+        <Text style={styles.logo}>YuppiAPP</Text>
+          <Text style={styles.forgot}>Login</Text>
           {this.state.errorMessage &&
             <Text style={{ color: 'red' }}>
               {this.state.errorMessage}
             </Text>}
-          <TextInput
-            style={styles.textInput}
-            autoCapitalize="none"
-            placeholder=" Email"
-            onChangeText={email => this.setState({ email })}
-            value={this.state.email}
-          />
-          <TextInput
-            secureTextEntry
-            style={styles.textInput}
-            autoCapitalize="none"
-            placeholder=" Password"
-            onChangeText={password => this.setState({ password })}
-            value={this.state.password}
-          />
-          <View style={styles.button}>
-          <Button 
-          style={styles.button}
-          title="Login" onPress={this.handleLogin} />
+          <View style={styles.inputView} >
+            <TextInput
+              style={styles.textInput}
+              autoCapitalize="none"
+              placeholder=" Email..."
+              onChangeText={email => this.setState({ email })}
+              value={this.state.email}/>
+          </View>
+          
+          <View style={styles.inputView} >
+            <TextInput
+              secureTextEntry
+              style={styles.textInput}
+              autoCapitalize="none"
+              placeholder=" Password..."
+              onChangeText={password => this.setState({ password })}
+              value={this.state.password}/>
           </View>
 
-          <View style={styles.button}>
-          <Button
-            title="Sign Up"
-            onPress={() => this.props.navigation.navigate('SignUp')}
-          />
-          </View>
+          <TouchableOpacity>
+            <Text style={styles.forgot}>Forgot Password?</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+          style={styles.button}
+          onPress={this.handleLogin} >
+          <Text style={{color:"#fff"}}>Login</Text>
+          </TouchableOpacity>
+            
+          <TouchableOpacity //style={styles.button}
+          >
+          <Text style={{color:"#fff"}}
+          onPress={() => this.props.navigation.navigate('SignUp')}>Sign Up</Text>
+          </TouchableOpacity>
 
           
         </View>
-      </View>
+      // </View>
     )
   }
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    //justifyContent: 'center',
-    alignItems: 'center'
-  },
-  textInput: {
-    height: 40,
-    width: '90%',
-    borderColor: 'gray',
-    borderWidth: 2,
-    marginTop: 8
-  },
-  button:
-  {
-    width:'50%',
-   //s marginHorizontal:10,
-    marginTop:4
-  },
-  loginInfoContainer: {
-    position: 'absolute',
-    top: 10,
-    width:'98%',
-    //left: 0,
-    //right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
-  },
-})

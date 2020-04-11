@@ -1,11 +1,14 @@
 // SignUp.js
 import React from 'react'
-import { StyleSheet, Text, TextInput, View, Button } from 'react-native'
+import { StyleSheet, Text, TextInput, View, Button,TouchableOpacity } from 'react-native'
 import firebase from 'firebase'
+import styles from '../components/CustomStyle'
+
 
 export default class SignUp extends React.Component {
   state = { email: '', password: '', errorMessage: null }
 handleSignUp = () => {
+  this.setState({ errorMessage: null })
   firebase
       .auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
@@ -16,74 +19,38 @@ handleSignUp = () => {
 render() {
     return (
       <View style={styles.container}>
-        <Text>Sign Up</Text>
+        <Text style={styles.logo}>YuppiAPP</Text>
+        <Text style={styles.forgot}>Sign Up</Text>
         {this.state.errorMessage &&
           <Text style={{ color: 'red' }}>
             {this.state.errorMessage}
           </Text>}
-        <TextInput
-          placeholder=" Email"
-          autoCapitalize="none"
-          style={styles.textInput}
-          onChangeText={email => this.setState({ email })}
-          value={this.state.email}
-        />
-        <TextInput
-          secureTextEntry
-          placeholder=" Password"
-          autoCapitalize="none"
-          style={styles.textInput}
-          onChangeText={password => this.setState({ password })}
-          value={this.state.password}
-        />
-        <View style={styles.button}>
-          <Button title="Sign Up" onPress={this.handleSignUp} />
-        </View>
+          <View style={styles.inputView} >
+            <TextInput
+              style={styles.textInput}
+              autoCapitalize="none"
+              placeholder=" Email..."
+              onChangeText={email => this.setState({ email })}
+              value={this.state.email}/>
+          </View>
+          
+          <View style={styles.inputView} >
+            <TextInput
+              secureTextEntry
+              style={styles.textInput}
+              autoCapitalize="none"
+              placeholder=" Password..."
+              onChangeText={password => this.setState({ password })}
+              value={this.state.password}/>
+          </View>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={this.handleSignUp} >
+          <Text style={{color:"#fff"}}>Sign Up</Text>
+        </TouchableOpacity>
         
       </View>
     )
   }
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    top:15,
-    backgroundColor: '#fff',
-    //justifyContent: 'center',
-    alignItems: 'center'
-  },
-  textInput: {
-    height: 40,
-    width: '90%',
-    borderColor: 'gray',
-    borderWidth: 2,
-    marginTop: 8
-  },
-  button:
-  {
-    width:'50%',
-   //s marginHorizontal:10,
-    marginTop:4
-  },
-  loginInfoContainer: {
-    position: 'absolute',
-    top: 10,
-    width:'98%',
-    //left: 0,
-    //right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
-  },
-})

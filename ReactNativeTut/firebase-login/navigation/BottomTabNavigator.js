@@ -36,7 +36,7 @@ export default function BottomTabNavigator({ navigation, route }) {
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-code-working" />,
         }}
       />
-      <BottomTab.Screen
+      {/* <BottomTab.Screen
         name="Main"
         component={Main}
         options={{
@@ -44,7 +44,7 @@ export default function BottomTabNavigator({ navigation, route }) {
           title: 'Main',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-home" />,
         }}
-      />
+      /> */}
       <BottomTab.Screen
         name="SignUp"
         component={SignUp}
@@ -53,14 +53,6 @@ export default function BottomTabNavigator({ navigation, route }) {
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-person-add" />,
         }}
       />
-      {/* <BottomTab.Screen
-        name="Links"
-        component={LinksScreen}
-        options={{
-          title: 'Resources',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
-        }}
-      /> */}
     </BottomTab.Navigator>
   );
 }
@@ -69,6 +61,8 @@ function getHeaderTitle(route) {
   const routeName = route.state?.routes[route.state.index]?.name ?? INITIAL_ROUTE_NAME;
 
   switch (routeName) {
+    case 'Login':
+      return 'Login Page';
     case 'Home':
       return 'How to get started';
     case 'SignUp':
@@ -76,9 +70,7 @@ function getHeaderTitle(route) {
     case 'Load':
       return 'Load Screen';
     case 'Main':
-      return 'Main Page';
-    case 'Login':
-      return 'Login Page';
+      return 'Profile';
     case 'Links':
       return 'Links to learn more';
   }
