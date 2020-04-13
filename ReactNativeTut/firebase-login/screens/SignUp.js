@@ -1,7 +1,7 @@
 // SignUp.js
 import React from 'react'
 import { StyleSheet, Text, TextInput, View, Button,TouchableOpacity } from 'react-native'
-import firebase from 'firebase'
+import firebase from '../constants/ApiKeys'
 import styles from '../components/CustomStyle'
 
 

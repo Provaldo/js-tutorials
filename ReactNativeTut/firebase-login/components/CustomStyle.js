@@ -77,4 +77,17 @@ export default StyleSheet.create({
       backgroundColor: '#fbfbfb',
       paddingVertical: 20,
     },
+    containerP: {
+      backgroundColor: "#fff",
+      paddingTop:40,
+      alignItems:"center",
+      flex:1
+  
+    },
+    profileImg:{
+      width:"80%",
+      height:"30%",
+      borderRadius:70,
+      marginTop:5
+    },
   })

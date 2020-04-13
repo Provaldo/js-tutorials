@@ -1,7 +1,7 @@
 // Main.js
 import React from 'react'
 import { StyleSheet, Platform, Image, Text, View,TouchableOpacity } from 'react-native'
-import firebase from 'firebase'
+import firebase from '../constants/ApiKeys'
 import Customstyles from '../components/CustomStyle'
 
 
