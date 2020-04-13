@@ -1,26 +1,42 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
+import { View,TouchableOpacity,Text } from 'react-native'
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
-import  SignUp from '../screens/SignUp'
-import Login from '../screens/Login'
-import Load from '../screens/Load'
 import Main from '../screens/Main'
+import styles from '../components/CustomStyle'
+import { Ionicons } from '@expo/vector-icons';
+
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
 
+class Header extends React.Component {
+    render(){
+
+     return(
+    <View style={styles.header}>
+      <TouchableOpacity onPress={()=>this.props.nav()}>
+        <Ionicons name="ios-menu" size={32} />
+      </TouchableOpacity>
+      {/* <Text>{this.props.name()}</Text> */}
+      <Text style={{width:50}}></Text>
+    </View>
+  )};
+     }
+const Drawer = createDrawerNavigator();
 
 export default function BottomTabNavigatorSignedIn({ navigation, route }) {
-    navigation.setOptions({ headerTitle: getHeaderTitle(route) });
+    navigation.setOptions({ headerTitle: getHeaderTitle(route),headerRight:(navigation)=>
+    (<Header name={()=>"H3H"} nav={()=>navigation.openDrawer()}/>) });
     return (
-      <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
-        <BottomTab.Screen
+    <Drawer.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
+        <Drawer.Screen
           name="Home"
           component={HomeScreen}
-          options={{
+          navigationOptions={{
             title: 'Get Started',
             tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-code-working" />,
           }}
@@ -34,7 +50,7 @@ export default function BottomTabNavigatorSignedIn({ navigation, route }) {
             tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-home" />,
           }}
         />
-      </BottomTab.Navigator>
+    </Drawer.Navigator>
     );
   }
   

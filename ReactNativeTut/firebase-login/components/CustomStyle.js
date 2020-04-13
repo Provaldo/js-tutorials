@@ -77,4 +77,36 @@ export default StyleSheet.create({
       backgroundColor: '#fbfbfb',
       paddingVertical: 20,
     },
+    header:{
+      width:"55%",
+      height:60,
+      flexDirection:"row",
+      justifyContent:"space-between",
+      alignItems:"center",
+      //paddingLeft:40
+    },
+    listItem:{
+      height:60,
+      alignItems:"center",
+      flexDirection:"row",
+  },
+  profileImg:{
+    width:80,
+    height:80,
+    borderRadius:40,
+    marginTop:20
+  },
+  sidebarDivider:{
+    height:1,
+    width:"100%",
+    backgroundColor:"lightgray",
+    marginVertical:10
+  },
+  container2: {
+    backgroundColor: "#fff",
+    paddingTop:40,
+    alignItems:"center",
+    flex:1
+
+  },
   })
