@@ -1,8 +1,5 @@
 import React from "react";
 import firebase from "../constants/ApiKeys";
-//import "@firebase/firestore";
-//import ApiKeys from "../constants/ApiKeys";
-
 import {
   StyleSheet,
   Text,
@@ -11,9 +8,12 @@ import {
   Image,
   TouchableOpacity,
   YellowBox,
+  TouchableOpacityBase,
+  Button,
 } from "react-native";
 import _ from "lodash";
 import Loading from "./Load";
+import Modal from "react-native-modal";
 
 YellowBox.ignoreWarnings(["Setting a timer"]);
 const _console = _.clone(console);
@@ -23,9 +23,17 @@ console.warn = (message) => {
   }
 };
 
-function Item({ item }) {
+function Item({ item, toggleModal, isModalVisible }) {
   return (
-    <View style={styles.listItem}>
+    <TouchableOpacity style={styles.listItem}>
+    {/*  onPress={toggleModal}> */}
+      {/* <Modal isVisible={isModalVisible} hideModalContentWhileAnimating={true}
+      backdropTransitionOutTiming={0}>
+        <View style={{ flex: 1 }}>
+          <Text>Hello!</Text>
+          <Button title="Hide modal" onPress={toggleModal} />
+        </View>
+      </Modal> */}
       <Image
         source={{ uri: item.photo }}
         style={{ width: 60, height: 60, borderRadius: 30 }}
@@ -44,14 +52,13 @@ function Item({ item }) {
       >
         <Text style={{ color: "green" }}>Call</Text>
       </TouchableOpacity>
-    </View>
+    </TouchableOpacity>
   );
 }
 
 export default class ListUsers extends React.Component {
   state = {
-    //currentUser: null,
-    //db: null,
+    isModalVisible: false,
     isLoading: true,
     data: [
       {
@@ -121,6 +128,10 @@ export default class ListUsers extends React.Component {
     ],
   };
 
+  toggleModal = () => {
+    this.setState({ isModalVisible: !this.state.isModalVisible });
+  };
+
   constructor(props) {
     super();
     this.firestoreRef = firebase.firestore().collection("Users");
@@ -147,52 +158,35 @@ export default class ListUsers extends React.Component {
       };
       console.log(this.user);
       this.setState({
-        data: [this.user,...this.state.data],
+        data: [this.user, ...this.state.data],
       });
     });
     this.setState({ isLoading: false });
   };
 
-  //   componentDidMount() {
-  //     //const reg=firebase.initializeApp(ApiKeys.FirebaseConfig);
-  //     const { currentUser } = firebase.auth();
-  //     const db = firebase.firestore();
-  //firebase.firestore.setLogLevel("debug");
-  //     this.setState({ currentUser });
-  //     // console.log( db.collection("Users").get()
-  //     // .then(console.log("res"))
-  //     // .catch("Gamoto") )
-  //     // db.collection("Users").get().then(function(querySnapshot) {
-  //     //     querySnapshot.forEach(function(doc) {
-  //     //         // doc.data() is never undefined for query doc snapshots
-  //     //         console.log(doc.id, " => ", doc.data());
-  //     //     });
-  //     // });
-  //       console.log("==================ENDNDNDDN")
-  //       db.collection("Users").doc("mario").set({
-  //         employment: "plumber",
-  //         outfitColor: "red",
-  //         specialAttack: "fireball"
-  //       }).then(console.log("frerelrjlfrjlr"))
-  //       .catch(console.log("Catchlkk,"))
-  //       console.log("Writeeee====")
-  //   }
-
   render() {
-    //const { currentUser } = this.state;
-    //xthis.state.data.push(this.user)
-    if(this.state.isLoading){
-        return(
-          <Loading/>
-        )
-      }  
+    if (this.state.isLoading) {
+      return <Loading />;
+    }
     return (
       <View style={styles.container}>
-        {/* <Text>Hi {currentUser && currentUser.email} ,{currentUser && currentUser.uid}!!!</Text> */}
+      {/* <Button title="Show modal" onPress={this.toggleModal} />
+        <Modal isVisible={this.state.isModalVisible}>
+          <View style={{flex: 1,marginTop:60}}>
+            <Text>Hello!</Text>
+            <Button title="Hide modal" onPress={this.toggleModal} />
+          </View>
+        </Modal> */}
         <FlatList
           style={{ flex: 1 }}
           data={this.state.data}
-          renderItem={({ item }) => <Item item={item} />}
+          renderItem={({ item }) => (
+            <Item
+              isModalVisible={this.state.isModalVisible}
+              toggleModal={this.toggleModal}
+              item={item}
+            />
+          )}
           keyExtractor={(item) => item.email}
         />
       </View>
