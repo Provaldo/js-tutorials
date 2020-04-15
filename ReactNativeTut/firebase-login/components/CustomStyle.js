@@ -91,15 +91,25 @@ export default StyleSheet.create({
       marginTop:5
     },
     modalContent: {
-      backgroundColor: 'white',
+      backgroundColor: '#f6f6f6',
       padding: 22,
       justifyContent: 'center',
-      alignItems: 'center',
+      //alignItems: 'center',
       borderRadius: 4,
       borderColor: 'rgba(0, 0, 0, 0.1)',
     },
     bottomModal: {
       justifyContent: 'flex-end',
       margin: 0,
+    },
+    item:{
+      //width:"80%",
+      color:"#003f5c",//"#fc5185",
+      fontWeight:"bold",
+      backgroundColor:"#fff",
+      borderRadius:20,
+      padding:5,
+      marginBottom:5,
+      flexDirection:"row",
     },
   })

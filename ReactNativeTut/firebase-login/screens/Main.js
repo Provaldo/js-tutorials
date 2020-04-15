@@ -16,7 +16,8 @@ handleSignOut = () => {
   firebase
       .auth()
       .signOut()
-      .then(() => this.props.navigation.navigate('Root'));
+      .then(() => this.props.navigation.goBack()
+      /*this.props.navigation.navigate('Root')*/);
   const cu = null;
   this.setState({cu});
 

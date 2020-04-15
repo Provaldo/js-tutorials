@@ -8,14 +8,14 @@ import {
   Image,
   TouchableOpacity,
   YellowBox,
-  TouchableOpacityBase,
-  Button,
 } from "react-native";
 import _ from "lodash";
 import Loading from "./Load";
 import Modal from "react-native-modal";
 import g_styles from "../components/CustomStyle";
+import {capitalize, randomKey} from "../tools/Tools"
 
+//========= Warning Suppression =============
 YellowBox.ignoreWarnings(["Setting a timer"]);
 const _console = _.clone(console);
 console.warn = (message) => {
@@ -23,39 +23,41 @@ console.warn = (message) => {
     _console.warn(message);
   }
 };
-
-
-
+//============================================
+const TextIt = ({ item }) =>
+  Object.keys(item)
+    .filter((key) => key != "photo" && key != "key")
+    .map((key) => {
+      return (
+        <Text style={g_styles.item} key={randomKey()}>
+          {capitalize(key)}:{item[key]}
+        </Text>
+      );
+    });
 function Item({ item }) {
-    const [ModalVisible,setModalVisible] = useState(false)
-const toggleModal = () => {
+  const [ModalVisible, setModalVisible] = useState(false);
+  const toggleModal = () => {
     setModalVisible(!ModalVisible);
   };
   return (
     <TouchableOpacity style={styles.listItem} onPress={toggleModal}>
-      {/* <Modal isVisible={isModalVisible} hideModalContentWhileAnimating={true}
-      backdropTransitionOutTiming={0}>
-        <View style={{ flex: 1 }}>
-          <Text>Hello!</Text>
-          <Button title="Hide modal" onPress={toggleModal} />
-        </View>
-      </Modal> */}
       <Modal
-          isVisible={ModalVisible}
-          animationIn={"slideInLeft"}
-          animationOut={"slideOutRight"}
-        >
-          <View style={g_styles.modalContent}>
-            <TouchableOpacity onPress={toggleModal}>
-            <Text>Name:{item.name}</Text>
-            <Text>Poition:{item.position}</Text>
-            <Text>Email:{item.email}</Text>
-              <View style={styles.button}>
-                <Text>Close</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </Modal>
+        isVisible={ModalVisible}
+        animationIn={"slideInLeft"}
+        animationOut={"slideOutRight"}
+      >
+        <View style={g_styles.modalContent}>
+          <TextIt item={item} />
+          {/* <Text style={g_styles.item}>Name:{item.name}</Text>
+          <Text style={g_styles.item}>Position:{item.position}</Text>
+          <Text style={g_styles.item}>Email:{item.email}</Text> */}
+          <TouchableOpacity onPress={toggleModal}>
+            <View style={styles.button}>
+              <Text>Close</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </Modal>
       <Image
         source={{ uri: item.photo }}
         style={{ width: 60, height: 60, borderRadius: 30 }}
@@ -80,7 +82,6 @@ const toggleModal = () => {
 
 export default class ListUsers extends React.Component {
   state = {
-    isModalVisible: false,
     isLoading: true,
     data: [
       {
@@ -150,8 +151,6 @@ export default class ListUsers extends React.Component {
     ],
   };
 
-  
-
   constructor(props) {
     super();
     this.firestoreRef = firebase.firestore().collection("Users");
@@ -160,6 +159,7 @@ export default class ListUsers extends React.Component {
 
   componentDidMount() {
     this.unsubscribe = this.firestoreRef.onSnapshot(this.getCollection);
+    //.catch(console.log("Constr ERROR"));
   }
 
   componentWillUnmount() {
@@ -184,52 +184,16 @@ export default class ListUsers extends React.Component {
     this.setState({ isLoading: false });
   };
 
-  _renderButton = (text, onPress) => (
-    <TouchableOpacity onPress={onPress}>
-      <View style={styles.button}>
-        <Text>{text}</Text>
-      </View>
-    </TouchableOpacity>
-  );
-
-//   _renderModalContent = () => (
-//     <View style={g_styles.modalContent}>
-//       <Text>Hello!</Text>
-//       {this._renderButton("Close", this.toggleModal())}
-//     </View>
-//   );
-
   render() {
     if (this.state.isLoading) {
       return <Loading />;
     }
     return (
       <View style={styles.container}>
-        {/* {this._renderButton("Sliding from the sides", this.toggleModal)}
-        <Modal
-          isVisible={this.state.isModalVisible}
-          animationIn={"slideInLeft"}
-          animationOut={"slideOutRight"}
-        >
-          <View style={g_styles.modalContent}>
-            <Text>Hello!</Text>
-            <TouchableOpacity onPress={this.toggleModal}>
-              <View style={styles.button}>
-                <Text>Close</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </Modal> */}
         <FlatList
           style={{ flex: 1 }}
           data={this.state.data}
-          renderItem={({ item }) => (
-            <Item
-              //isModalVisible={this.state.isModalVisible}
-              //toggleModal={this.toggleModal}
-              item={item}
-            />
-          )}
+          renderItem={({ item }) => <Item item={item} />}
           keyExtractor={(item) => item.email}
         />
       </View>
