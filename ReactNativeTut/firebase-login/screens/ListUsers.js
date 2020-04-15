@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import firebase from "../constants/ApiKeys";
 import {
   StyleSheet,
@@ -14,6 +14,7 @@ import {
 import _ from "lodash";
 import Loading from "./Load";
 import Modal from "react-native-modal";
+import g_styles from "../components/CustomStyle";
 
 YellowBox.ignoreWarnings(["Setting a timer"]);
 const _console = _.clone(console);
@@ -23,10 +24,15 @@ console.warn = (message) => {
   }
 };
 
-function Item({ item, toggleModal, isModalVisible }) {
+
+
+function Item({ item }) {
+    const [ModalVisible,setModalVisible] = useState(false)
+const toggleModal = () => {
+    setModalVisible(!ModalVisible);
+  };
   return (
-    <TouchableOpacity style={styles.listItem}>
-    {/*  onPress={toggleModal}> */}
+    <TouchableOpacity style={styles.listItem} onPress={toggleModal}>
       {/* <Modal isVisible={isModalVisible} hideModalContentWhileAnimating={true}
       backdropTransitionOutTiming={0}>
         <View style={{ flex: 1 }}>
@@ -34,6 +40,22 @@ function Item({ item, toggleModal, isModalVisible }) {
           <Button title="Hide modal" onPress={toggleModal} />
         </View>
       </Modal> */}
+      <Modal
+          isVisible={ModalVisible}
+          animationIn={"slideInLeft"}
+          animationOut={"slideOutRight"}
+        >
+          <View style={g_styles.modalContent}>
+            <TouchableOpacity onPress={toggleModal}>
+            <Text>Name:{item.name}</Text>
+            <Text>Poition:{item.position}</Text>
+            <Text>Email:{item.email}</Text>
+              <View style={styles.button}>
+                <Text>Close</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </Modal>
       <Image
         source={{ uri: item.photo }}
         style={{ width: 60, height: 60, borderRadius: 30 }}
@@ -128,9 +150,7 @@ export default class ListUsers extends React.Component {
     ],
   };
 
-  toggleModal = () => {
-    this.setState({ isModalVisible: !this.state.isModalVisible });
-  };
+  
 
   constructor(props) {
     super();
@@ -164,17 +184,40 @@ export default class ListUsers extends React.Component {
     this.setState({ isLoading: false });
   };
 
+  _renderButton = (text, onPress) => (
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.button}>
+        <Text>{text}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+
+//   _renderModalContent = () => (
+//     <View style={g_styles.modalContent}>
+//       <Text>Hello!</Text>
+//       {this._renderButton("Close", this.toggleModal())}
+//     </View>
+//   );
+
   render() {
     if (this.state.isLoading) {
       return <Loading />;
     }
     return (
       <View style={styles.container}>
-      {/* <Button title="Show modal" onPress={this.toggleModal} />
-        <Modal isVisible={this.state.isModalVisible}>
-          <View style={{flex: 1,marginTop:60}}>
+        {/* {this._renderButton("Sliding from the sides", this.toggleModal)}
+        <Modal
+          isVisible={this.state.isModalVisible}
+          animationIn={"slideInLeft"}
+          animationOut={"slideOutRight"}
+        >
+          <View style={g_styles.modalContent}>
             <Text>Hello!</Text>
-            <Button title="Hide modal" onPress={this.toggleModal} />
+            <TouchableOpacity onPress={this.toggleModal}>
+              <View style={styles.button}>
+                <Text>Close</Text>
+              </View>
+            </TouchableOpacity>
           </View>
         </Modal> */}
         <FlatList
@@ -182,8 +225,8 @@ export default class ListUsers extends React.Component {
           data={this.state.data}
           renderItem={({ item }) => (
             <Item
-              isModalVisible={this.state.isModalVisible}
-              toggleModal={this.toggleModal}
+              //isModalVisible={this.state.isModalVisible}
+              //toggleModal={this.toggleModal}
               item={item}
             />
           )}
@@ -209,5 +252,14 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     flexDirection: "row",
     borderRadius: 10,
+  },
+  button: {
+    backgroundColor: "lightblue",
+    padding: 12,
+    margin: 16,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 4,
+    borderColor: "rgba(0, 0, 0, 0.1)",
   },
 });
