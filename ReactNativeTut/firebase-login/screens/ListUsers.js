@@ -13,7 +13,7 @@ import _ from "lodash";
 import Loading from "./Load";
 import Modal from "react-native-modal";
 import g_styles from "../components/CustomStyle";
-import {capitalize, randomKey} from "../tools/Tools"
+import { capitalize, randomKey } from "../tools/Tools";
 
 //========= Warning Suppression =============
 YellowBox.ignoreWarnings(["Setting a timer"]);
@@ -158,12 +158,14 @@ export default class ListUsers extends React.Component {
   }
 
   componentDidMount() {
-    this.unsubscribe = this.firestoreRef.onSnapshot(this.getCollection);
+    this.unsubscribe = this.firestoreRef.onSnapshot(this.getCollection
+      ,(error)=>console.log("Error:"+error));
     //.catch(console.log("Constr ERROR"));
   }
 
   componentWillUnmount() {
     this.unsubscribe();
+    console.log("jinjnjiernjiefnjier")
   }
 
   getCollection = (querySnapshot) => {
@@ -176,7 +178,7 @@ export default class ListUsers extends React.Component {
         photo,
         position,
       };
-      console.log(this.user);
+      //console.log(this.user);
       this.setState({
         data: [this.user, ...this.state.data],
       });
@@ -185,9 +187,12 @@ export default class ListUsers extends React.Component {
   };
 
   render() {
+    
     if (this.state.isLoading) {
       return <Loading />;
     }
+    console.log(this.props.navigation.isFocused());
+    
     return (
       <View style={styles.container}>
         <FlatList

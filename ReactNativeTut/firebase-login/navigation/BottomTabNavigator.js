@@ -1,16 +1,15 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import * as React from 'react';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import * as React from "react";
 
-import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
-import  SignUp from '../screens/SignUp'
-import Login from '../screens/Login'
-import Load from '../screens/Load'
-import Main from '../screens/Main'
+import TabBarIcon from "../components/TabBarIcon";
+import HomeScreen from "../screens/HomeScreen";
+import SignUp from "../screens/SignUp";
+import Login from "../screens/Login";
+import { switcherTitle,listScreens } from "../constants/ScreenNames";
 
+const tab=listScreens.root
 const BottomTab = createBottomTabNavigator();
-const INITIAL_ROUTE_NAME = 'Home';
+const INITIAL_ROUTE_NAME = tab.home;
 
 export default function BottomTabNavigator({ navigation, route }) {
   // Set the header title on the parent stack navigator depending on the
@@ -21,57 +20,41 @@ export default function BottomTabNavigator({ navigation, route }) {
   return (
     <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
       <BottomTab.Screen
-        name="Login"
+        name={tab.login}
         component={Login}
         options={{
-          title: 'Login',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-person" />,
+          title: "Login",
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} name="md-person" />
+          ),
         }}
       />
       <BottomTab.Screen
-        name="Home"
+        name={tab.home}
         component={HomeScreen}
         options={{
-          title: 'Get Started',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-code-working" />,
+          title: "Get Started",
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} name="md-code-working" />
+          ),
         }}
       />
-      {/* <BottomTab.Screen
-        name="Main"
-        component={Main}
-        options={{
-          
-          title: 'Main',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-home" />,
-        }}
-      /> */}
       <BottomTab.Screen
-        name="SignUp"
+        name={tab.signUp}
         component={SignUp}
         options={{
-          title: 'SignUp',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-person-add" />,
+          title: "SignUp",
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} name="md-person-add" />
+          ),
         }}
       />
     </BottomTab.Navigator>
   );
 }
 
-function getHeaderTitle(route) {
-  const routeName = route.state?.routes[route.state.index]?.name ?? INITIAL_ROUTE_NAME;
-
-  switch (routeName) {
-    case 'Login':
-      return 'Login Page';
-    case 'Home':
-      return 'How to get started';
-    case 'SignUp':
-      return 'Sign Up';
-    case 'Load':
-      return 'Load Screen';
-    case 'Main':
-      return 'Profile';
-    case 'Links':
-      return 'Links to learn more';
-  }
+export function getHeaderTitle(route) {
+  const routeName =
+    route.state?.routes[route.state.index]?.name ?? INITIAL_ROUTE_NAME;
+  switcherTitle(routeName);
 }

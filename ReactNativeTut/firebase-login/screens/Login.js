@@ -2,14 +2,17 @@
 import React from 'react'
 import { Text, TextInput, View, Button ,TouchableOpacity} from 'react-native'
 import styles from '../components/CustomStyle'
-import firebase from 'firebase'
+import firebase from '../constants/ApiKeys'
+import {listScreens} from '../constants/ScreenNames'
 
+const root=listScreens.root;
+const signedIn=listScreens.signIn;
 export default class Login extends React.Component {
   state = { email: '', password: '', errorMessage: null };
 
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
-      this.props.navigation.navigate(user ? 'MainScreen' : 'Login')
+      this.props.navigation.navigate(user ?  signedIn.name: root.login)
     })
   };
 
@@ -19,7 +22,7 @@ export default class Login extends React.Component {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(() => this.props.navigation.navigate('MainScreen'))
+      .then(() => this.props.navigation.navigate(signedIn.name))
       .catch(error => this.setState({ errorMessage: error.message }))
 
     console.log('handleLogin--')

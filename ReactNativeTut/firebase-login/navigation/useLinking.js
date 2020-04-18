@@ -12,11 +12,20 @@ export default function(containerRef) {
           Links: 'links',
           Login: 'login',
           SignUp: 'signup',
-          Main: 'main',
           Load: 'load',
           Settings: 'settings',
         },
       },
+      MainScreen:
+      {
+        path: 'mainscreen',
+        screens: {
+         Profile:'profile',
+         ListUsers:'listU',
+         Main:'logout',
+         Load: 'load',
+        },
+      }
     },
   });
 }

@@ -16,8 +16,10 @@ handleSignOut = () => {
   firebase
       .auth()
       .signOut()
-      .then(() => this.props.navigation.goBack()
-      /*this.props.navigation.navigate('Root')*/);
+      .then(() => this.props.navigation.goBack())
+      .catch((error)=>console.log("Error on signout:"+error)
+      //this.props.navigation.navigate('Root')
+      );
   const cu = null;
   this.setState({cu});
 

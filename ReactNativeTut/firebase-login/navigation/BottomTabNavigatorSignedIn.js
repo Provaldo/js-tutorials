@@ -2,20 +2,21 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
 
 import TabBarIcon from "../components/TabBarIcon";
-import HomeScreen from "../screens/HomeScreen";
 import Main from "../screens/Main";
 import Profile from "../screens/Profile";
 import ListUsers from "../screens/ListUsers"
+import {switcherTitle,listScreens} from "../constants/ScreenNames"
 
+const tab=listScreens.signIn;
 const BottomTab = createBottomTabNavigator();
-const INITIAL_ROUTE_NAME = "Profile";
+const INITIAL_ROUTE_NAME = tab.profile;
 
 export default function BottomTabNavigatorSignedIn({ navigation, route }) {
   navigation.setOptions({ headerTitle: getHeaderTitle(route) });
   return (
     <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
       <BottomTab.Screen
-          name="Profile"
+          name={tab.profile}
           component={Profile}
           options={{
           title: "Profile",
@@ -25,7 +26,7 @@ export default function BottomTabNavigatorSignedIn({ navigation, route }) {
         }}
       />
       <BottomTab.Screen
-        name="ListUsers"
+        name={tab.list}
         component={ListUsers}
         options={{
           title: "List Of User",
@@ -36,7 +37,7 @@ export default function BottomTabNavigatorSignedIn({ navigation, route }) {
       />
 
       <BottomTab.Screen
-        name="Main"
+        name={tab.main}
         component={Main}
         options={{
           title: "Log Out",
@@ -49,20 +50,8 @@ export default function BottomTabNavigatorSignedIn({ navigation, route }) {
   );
 }
 
-function getHeaderTitle(route) {
+export function getHeaderTitle(route) {
   const routeName =
     route.state?.routes[route.state.index]?.name ?? INITIAL_ROUTE_NAME;
-
-  switch (routeName) {
-    case "Home":
-        return "How to get started";
-    case "Profile":
-        return "Profile";
-    case "Load":
-        return "Load Screen";
-    case "Main":
-        return "Log Out";
-    case "ListUsers":
-        return "List of Users";
-  }
+  switcherTitle(routeName);
 }
